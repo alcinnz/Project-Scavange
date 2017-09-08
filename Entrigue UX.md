@@ -20,3 +20,12 @@ For keyboard accessibility typing would underline all matches and `space`/`enter
 In the footer would be links to about and privacy measures, as well as tags for "safe search" and languages. 
 
 Additionally their may be a toggle button to switch to a view with the topics organized into columns for their themes. Each of these columns would have their background colour coded. 
+
+## Entrigue DB
+Also in the footer would be a toggle button labelled "Suggest Correction". This would turn the background black and switch to a monospace variant of the font. In this mode clicking a topic would take you to a editing interface for that topic/search engine. To help contributors there'd be comments on all these pages. In case of vandalization, it will be important to be able to revert records to previous versions. Another part of curation would involve flipping a configuration switch. 
+
+To edit which topics a search engine is organized under, a special interface would be required to search all the (potentially numerous) topics for one to add. A similar interface would be required to specify which tags infer which other tags. 
+
+A crawler would have a special account on this site to import any OpenSearch descriptors and VOID RDF metadata it finds. A messaging interface would be used to tell this crawler which sites it should check. 
+
+The branding on this site should be colourful to reflect the wordcloud on the mainsite. 
