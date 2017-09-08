@@ -29,3 +29,8 @@ To edit which topics a search engine is organized under, a special interface wou
 A crawler would have a special account on this site to import any OpenSearch descriptors and VOID RDF metadata it finds. A messaging interface would be used to tell this crawler which sites it should check. 
 
 The branding on this site should be colourful to reflect the wordcloud on the mainsite. 
+
+## General Feel
+The goal in this whole design is to get hunters from no idea where to look to some idea in less than a second. Making the interface somewhat fun can aid this as it encourages people to explore the possibilities, but fun and delight are not the main goals. 
+
+The whole interface springs out of this, with font design being the main area available to introduce branding. 
