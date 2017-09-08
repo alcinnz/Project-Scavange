@@ -32,3 +32,7 @@ To some extent this *is already* how people search for stuff online. If you're s
 * ---Gatherers---
 
 ^ indicates this is a browser feature to be incorporated into Odysseus where I'll showcase and test the Odysseus experience. 
+
+## Contributing
+
+If you know of others doing similar work to the above components, please issue a pull request to this repository to add a link. Also if you want to work with me on one of these components please get in contact with alcinnz@lavabit.com. If you work on a search technology that could work great alongside Project Scavange, please start a wikipage on this repository to list it until I can get Entrigue DB started.
