@@ -226,6 +226,29 @@ Iter<Object> sort(Expression[] fields, String presorted, Iter<Object> source):
   yield from sorted
 ```
 
+#### OPTIONAL
+
+```
+Iter<Object> optional(Iter<Object> source, Iter<Object>(Object) optional):
+  for result in source:
+    yield from optional(result) else [result]
+```
+
+#### UNION
+
+```
+Iter<Object> unionSorted(Iter<Object> a, Iter<Object> b):
+  until no more results:
+    yield and iterative smallest of $a or $b heads (possibly both if equal)
+
+Iter<Object> unionSlow(Iter<Object> a, Iter<Object> b):
+  as = Set(a)
+  yield from as
+  yield from item for item in b if item not in a
+```
+
+#### 
+
 ### Level 5 - Variable Order Optimization
 
 ```
@@ -286,7 +309,27 @@ This defines various query forms beyond SELECT, using very little additional log
 This layer would help support Federated SPARQL (which'll be particularly efficient when combining TWINKL triplestores. 
 
 ### Level 9 - Web Worker Interface
-
 Message me some SPARQL syntax (optionally specifying variables in a seperate object alongside), and I will message back each result finishing with one labelled "LAST". Message me while a query is in place and I'll message back an error. 
 
 Putting this in a Worker both makes it easier for me to lazily load in plugins & parsers (and makes for a nice import call), and it avoids blocking the website's UI thread. Also it makes including the module as simple as construcing a Web Worker. 
+
+## Additional features
+Some SPARQL features not listed here and not inherently solved by the above algorithm are:
+
+* FILTER EXISTS - incorporated into the pattern matching, with variables being scoped using renaming/projection. 
+* FILTER NOT EXISTS - runs the pattern matcher and skips result if that provides one. Incorporated into the pipeline. 
+* MINUS - Evaluates RHS and skips results based on it's solution. Incorporated into the pipeline. 
+* inline data - Evaluated using in-memory indexes.
+* OWL - Rewrites predicate paths. 
+* Subqueries - evaluated bottom-up as in the spec, but shared variables may pierce subqueries to be more constraining.
+* Querying multiple graphs - trivial if they're all TWINKL or plain files, otherwise like bottom-up. 
+
+### Paths
+
+* simple 1-length paths are supported natively.
+* `^` inverted paths are lowered.
+* `/` paths are lowered using hidden variables.
+* nontrivial `|` paths are lowered to a union.
+* `*` & `+` paths are evaluated using special index branches (it's faster to generate them with inserts than it is to generate on-demand) and trivial `|` paths.
+* `?` implemented using same logic as trivial `|` paths.
+* `!` lowers to FILTER NOT EXISTS.
