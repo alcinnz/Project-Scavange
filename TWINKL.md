@@ -226,3 +226,68 @@ Iter<Object> sort(Expression[] fields, String presorted, Iter<Object> source):
     return 0
   yield from sorted
 ```
+
+### Level 5 - Variable Order Optimization
+
+```
+optimizeVariableOrder(Query q):
+  Try starting the variable order with the raw variables at the start of the orderby clause
+  elseif q.groupBy: start with q.groupBy
+  elseif q.distinct and projection variables are straightforward: start with filter variables
+  else: addMostConstraining()
+  
+  Until no variables are left:
+    add next variable queryable on active indices at this time
+    failing that: addMostConstraining()
+  
+  To add a variable:
+    For each occurance:
+      select an active index that works for it
+      Failing that: error out
+      emit instructions to join on that index
+  To addMostConstraining:
+    For each variable:
+      For each occurance:
+        Refine possible indices to use
+        If another inactive index must be used: penalize
+    maximize noOfOccurances - number of necessary indices
+    activate necessary indices
+    add that variable
+  To add an starting variable:
+    For each occurance:
+      Refine possible indices to use
+      if another inactive index must be used:
+        activate previous best index
+        all inactive indices can be considered for the remaining indices
+    add the variable
+```
+
+This technique is based on the topological sorting algorithm (rather than the AI techniques used in relational databases for optimization). 
+
+### Level 6 - AST optimization
+To make the best possible plan, and to take advantage of the trie to optimize various filters, several passes over the AST are required:
+
+* Dead Variable Elimination: to not spend effort capturing unused variables.
+* Constant propagation: to expose further optimizations
+* Filter Extraction: extracts range and equality filters on raw variables from graph patterns or subcomponents thereof, to be applied within the graph pattern matching algorithm. 
+
+### Level 7 - Parsing
+Uses [Peg.js](https://pegjs.org/), possibly with an after-the-fact lowering. 
+
+### Level 8 - Services/query forms
+Defines an interface for evaluating SPARQL queries, with four implementations:
+
+* An abstract implementation which wraps a given Index object.
+* The main implementation using an IPFS published index.
+* One that fetches and parses (via a lazily loaded parser) RDF off the web. Loads that into an in-memory trie to query. 
+* A wrapper around a remote RDF endpoint. Doesn't use the abstract implementation. 
+
+This defines various query forms beyond SELECT, using very little additional logic. SPARQL UPDATE would also be supported, with the caviout that it will error out if you trie to update someone else's TWINKL triplestore or update a SPARQL endpoint that in turn doesn't support it. 
+
+This layer would help support Federated SPARQL (which'll be particularly efficient when combining TWINKL triplestores. 
+
+### Level 9 - Web Worker Interface
+
+Message me some SPARQL syntax (optionally specifying variables in a seperate object alongside), and I will message back each result finishing with one labelled "LAST". Message me while a query is in place and I'll message back an error. 
+
+Putting this in a Worker both makes it easier for me to lazily load in plugins & parsers (and makes for a nice import call), and it avoids blocking the website's UI thread. Also it makes including the module as simple as construcing a Web Worker. 
