@@ -26,3 +26,203 @@ Of the two the trie would be more compact, as it would effectively prefix-compre
 So a TWINKL database would consist of 6 tries for different permutations of subject, predicate, object triplets. The catch however is that since the ordering of tries is lexicographic, a BTree may be used in place of a trie node to query floating point values (which are difficult to get to order lexicographically). Other literal values may have their own TWINKL-specific little-endian notation. 
 
 This will be encoded in IPFS with links to other blocks being the branches, and the optional content flagging completion of a triplet, value, or value component. Differentiating between these helps to optimize several filter functions from core SPARQL. 
+
+## Query Algorithms
+
+Essentially the query algorithm consists of multiple layers of loops around the datastructure. 
+
+### Layer 0 - Data Access
+
+```
+interface Index:
+  Iter<String> asc()
+  Iter<String> desc()
+  String flags()
+  Index lookup(String key)
+  Boolean has(String key)
+
+classes Memory, IPFS implements Index
+
+classes Union implements Index:
+  String asc():
+    if @a is undefined: @a = @A.asc()
+    if @b is undefined: @b = @B.asc()
+    if @a == @b:
+      yield @a
+      @a = @b = undefined
+    if @a < @b:
+      yield @a
+      @a = undefined
+    if @a > @b:
+      yield @b
+      @b = undefined
+
+  String desc():
+    essentially the same as @asc()
+
+  String flags():
+    return @A.flags() + @B.flags()
+
+  Index lookup(String key):
+    if @A.has(key) and @B.has(key):
+      return new Union(@A.lookup(key), @B.lookup(key))
+    elif @A.has(key):
+      return @A.lookup(key)
+    elif @B.has(key):
+      return @B.lookup(key)
+```
+
+### Layer 1 - Locate keys
+
+```
+class Cursor:
+  Stack<Index> path = [root]
+  string cur_key
+  
+  String asc(String target):
+    for key in @path.peek().asc():
+      @cur_key = key
+      if key >= target: return key
+
+    @path.pop()
+    @asc(target)
+  String desc(String target):
+    essentially same as @asc()
+
+  String flags(): @path.peek().flags()
+  fetch():
+    @path.push(@path.peek().lookup(@cur_key))
+```
+
+### Layer 2 - Intersection/join
+
+TODO incorporate range queries into this
+
+```
+Iter<String> joinAsc(Cursor[] cursors, terminal = 'v'):
+  if target is undefined: target = cursors[0].asc()
+  # Locate next target that might match
+  for cursor in cursors:
+    next = cursor.asc()
+    if next > target:
+      target = next
+      repeat from start
+
+  # Check it out
+  fullmatch = true
+  for cursor in cursors:
+    if cursor.key != target:
+      fullmatch = false
+      cursor.fetch()
+
+  # Determine whether to yield the value, or to explore more
+  if fullmatch:
+    if all(terminal in cursor.flags() for cursor in cursors):
+      yield target
+    else: # TODO What's this condition?
+      cursors[0].fetch()
+
+  # Load next value
+  target = undefined
+  repeat from start
+```
+
+### Layer 3 - Graph patterns
+
+Chain the join() iterators together using:
+
+```
+Iterator<String> chain(Object context, Iterator<String> outer, Iterator<String> inner):
+  for value in outer:
+    context[outer.variable] = value
+    yield from inner
+```
+
+### Layer 4 - Pipeline/Final adjustments
+
+While SPARQL's syntax centers around graph patterns, which are implemented via the above loops, SPARQL offers various constructs straight from SQL. Those would be implemented as a pipeline of iterators around the ones described above. 
+
+#### OFFSET/LIMIT
+
+```
+Iter<Object> offset(Int offset, Iter<Object> source):
+  offset times: source.next()
+  yield from source
+
+Iter<Object> limit(Int limit, Iter<Object> source):
+  limit times: yield source.next()
+```
+
+#### FILTER/PROJECT/LET
+
+```
+Iter<Object> filter(Expression condition, Iter<Object> source):
+  for result in source:
+    if condition(result): yield result
+
+Iter<Object> project((String label, Expression ex)[] fields, Iter<Object> source):
+  for result in source:
+    yield {label : ex(result) forlabel, ex in fields}
+
+Iter<Object> let(string label, Expression ex, Iter<Object> source):
+  for result in source:
+    result[label] = ex(result)
+    yield result
+```
+
+#### AGGREGATE/DISTINCT
+
+```
+# Requires source to be sorted
+Iter<Object> aggregate(AggregateFunc[] funcs, String[] fields, Iter<Object> source):
+  next():
+    local result = source.next()
+    return [result[field] for field in fields]
+  key = next()
+  funcs.all(.reset())
+  
+  until next failed:
+    cur_key = next()
+    if cur_key != key:
+      for func in funcs:
+        result[func.variable] = func.finalize()
+      yield result
+      funcs.all(.reset())
+    funcs.all(.step(result)
+
+Iter<Object> SortedDistinct(Iter<Object> source):
+  prev = undefined
+  for result in source:
+    if result != prev: yield result
+    prev = result
+
+Iter<Object> SlowDistinct(Iter<Object> source):
+  prevs = set()
+  for result in source:
+    if result not in prevs:
+      prevs.add(result)
+      yield result
+```
+
+#### SORT
+
+To be used when it can't be incorporated into the graph pattern matching. Insertion sort is selected so that the sorting can be done in parallel with the networking.
+
+```
+Iter<Object> sort(Expression[] fields, String presorted, Iter<Object> source):
+  String key = undefined
+  Object[] sorted = []
+  for result in source:
+    if result[presorted] != key:
+      yield from sorted
+      sorted = []
+      key = result[presorted]
+    insert result into proper place in sorted by cmp
+  Int cmp(Object a, Object b):
+    for field in fields:
+      cmp = field(a).cmp(field(b))
+      if cmp != 0:
+        return cmp
+    return 0
+  yield from sorted
+```
