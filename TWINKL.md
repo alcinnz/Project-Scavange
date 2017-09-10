@@ -95,14 +95,13 @@ class Cursor:
 ```
 
 ### Layer 2 - Intersection/join
-
-TODO incorporate range queries into this
-
+This is quite involved as not only does it handle the join operation, but it incorporates range queries and is fidly on when to stop traversing down the loop.
 ```
-Iter<String> joinAsc(Cursor[] cursors, terminal = 'v'):
+Iter<String> joinAsc(Cursor[] cursors, terminal = 'v', target/start = undefined, end = undefined):
   if target is undefined: target = cursors[0].asc()
   # Locate next target that might match
   for cursor in cursors:
+    if target > end: return # terminate iterator
     next = cursor.asc()
     if next > target:
       target = next
@@ -117,9 +116,9 @@ Iter<String> joinAsc(Cursor[] cursors, terminal = 'v'):
 
   # Determine whether to yield the value, or to explore more
   if fullmatch:
-    if all(terminal in cursor.flags() for cursor in cursors):
+    if all(terminal in cursor.flags().lower() for cursor in cursors):
       yield target
-    else: # TODO What's this condition?
+    if none(terminal.upper() in cursor.flags() for cursor in cursors):
       cursors[0].fetch()
 
   # Load next value
