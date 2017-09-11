@@ -322,7 +322,8 @@ Some SPARQL features not listed here and not inherently solved by the above algo
 * inline data - Evaluated using in-memory indexes.
 * OWL - Rewrites predicate paths. 
 * Subqueries - evaluated bottom-up as in the spec, but shared variables may pierce subqueries to be more constraining.
-* Querying multiple graphs - trivial if they're all TWINKL or plain files, otherwise like bottom-up. 
+* Querying multiple graphs - trivial if they're all TWINKL or plain files, otherwise like bottom-up.
+* FILTER startswith() - can be optimized away *if* the join operation can ignore whether certain cursors have reached their markers. 
 
 ### Paths
 
