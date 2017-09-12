@@ -21,6 +21,7 @@ To some extent this *is already* how people search for stuff online. If you're s
 
 ## Components
 * ---Hunters---
+* **Siren**^ For when people have no idea what they want to find. 
 * **Combined Search**^ So users don't need to select a default search engine
 * **Entrigue** So users can find the ideal search engine for their needs without interrupting their search workflow.
 * **Entrigue DB** To curate the catalogue of search engines findable through Entrigue.
