@@ -35,7 +35,7 @@ On the other-hand there are a handful of sites where many, but not all, independ
 * Blender Cloud - a superb studio to source animations from
 * Internet Archive - mostly for public domain content
 
-What I do know however is that I would have to curate the collection to cull the low-quality items. 
+What I do know however is that I would have to curate the collection to cull the low-quality items. Also in order to make my catalogue as large as possible, I will outsource the actual purchase of movies to however the artist or distributor wants to sell it. 
 
 ## Target Audience
 While some of my users would be like me and seek out the DRM-free stuff specifically, it's realistic to think most of them don't care. They will expect to see the mainstream movies from the like of Disney, Warner Brothers, and Paramount as a (false) indicator of quality, but ultimately they'll watch anything that looks good. 
@@ -45,3 +45,5 @@ The hunter/gatherer personas used to guide the design of Project Scavange overal
 However once a gatherer downloads a movie they already have it somewhere else for rewatching, and as such won't be looking to download it again. Thus gatherers can be treated like hunters with the main difference being they'd use my site less and are more likely to be looking for DRM-free stuff. 
 
 Another common aspect of my users would be they likely don't know what they want to watch or download when they go to my site, only a vague idea of what sort of movies they want. They're also less likely to have seen or downloaded new stuff than old stuff, simply because they had a longer time to get around to the older stuff. 
+
+## Experience
