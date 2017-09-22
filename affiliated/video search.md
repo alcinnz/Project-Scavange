@@ -34,6 +34,7 @@ On the other-hand there are a handful of sites where many, but not all, independ
 * Defective By Design - lists these and several smaller sources
 * Blender Cloud - a superb studio to source animations from
 * Internet Archive - mostly for public domain content
+* IMDB/Wikipedia - for movie metadata
 
 What I do know however is that I would have to curate the collection to cull the low-quality items. Also in order to make my catalogue as large as possible, I will outsource the actual purchase of movies to however the artist or distributor wants to sell it. 
 
@@ -47,3 +48,17 @@ However once a gatherer downloads a movie they already have it somewhere else fo
 Another common aspect of my users would be they likely don't know what they want to watch or download when they go to my site, only a vague idea of what sort of movies they want. They're also less likely to have seen or downloaded new stuff than old stuff, simply because they had a longer time to get around to the older stuff. 
 
 ## Experience
+People generally organize movies into "genres" and occasionally organize a movie under multiple genres. This is already a well-understood framework people already categorize their tastes into. Additionally it would make sense to organize movies by year and by actors, directors, etc the user wants to see more from. 
+
+This would be exposed in the UI as a sidebar with genre "filter" links and a year sidebar. A searchbox would also be included to aid searching by title and movie-star, as well as support the other types of searches. The search would bring up a new page with a navbar instead of a sidebar, as would any pages for a movie star's filmography. 
+
+The content of the pages would be a grid of images depecting different movies, with the name beneath it with the addition of region restricted, $0, and DRM-encumbered (A.K.A no downloads) symbols. Hovering over one will show the movie's poster in the background and possibly play it's trailer in the sidebar on mute. Once it's clicked the experience is handed off to the artist or distributor, unless I need to link to different sites for different countries. In that case I'd minimize the UX harm by presenting the user with a map upon which I place favicons for the distribution sites. 
+
+The sorting of the titles would be roughly chronological, though DRM-encumbered titles would be demoted to the bottom. This demotion would be partially undone (to assure hunters that, yes, I have the mainstream titles) by promoting one or two DRM-encumbered titles from well-known production companies to each page of 10 movies. 
+
+To aid discovery in a similar (though enhanced) fashion to traditional television I'd place a looped and muted trailer in the topright corner of individual genre searches labelled "Now Playing". This would be emphasized with a larger size and red border. On the homepage I'll show the search sidebar and all "Now Playing" movies labelled by genre. The Now Playing labels would link to a schedule for that genre. Clicking one will play the movie DRM-free (because that's what I want to promote) using the browser's player sized to fill the viewport, without making it clear that you can download the movie or fighting the user doing so.
+
+### Sourcing "Now Playing" Movies
+Movies from the collection would be selected at random, and I will manually review that the movie looks professionally advertised. If it's paywalled or DRM-encumbered I will send an automated eMail offering to advertise for them if they provide me a DRM-free copy of the movie and trailer. If they refuse I will repeat this process, as that would be more affordable and/or my political preference. 
+
+Additionally I'll allow artists to pay me to promote their work, using a footer link. 
