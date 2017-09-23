@@ -56,9 +56,15 @@ The content of the pages would be a grid of images depecting different movies, w
 
 The sorting of the titles would be roughly chronological, though DRM-encumbered titles would be demoted to the bottom. This demotion would be partially undone (to assure hunters that, yes, I have the mainstream titles) by promoting one or two DRM-encumbered titles from well-known production companies to each page of 10 movies. 
 
-To aid discovery in a similar (though enhanced) fashion to traditional television I'd place a looped and muted trailer in the topright corner of individual genre searches labelled "Now Playing". This would be emphasized with a larger size and red border. On the homepage I'll show the search sidebar and all "Now Playing" movies labelled by genre. The Now Playing labels would link to a schedule for that genre. Clicking one will play the movie DRM-free (because that's what I want to promote) using the browser's player sized to fill the viewport, without making it clear that you can download the movie or fighting the user doing so.
+To aid discovery in a similar (though enhanced) fashion to traditional television I'd place a looped and muted trailer in the topright corner of individual genre searches labelled "Now Playing". This would be emphasized with a larger size and solid orange border. On the homepage I'll show the search sidebar and all "Now Playing" movies labelled by genre. The Now Playing labels would link to a schedule for that genre. Clicking one will play the movie DRM-free (because that's what I want to promote) using the browser's player sized to fill the viewport, without making it clear that you can download the movie or fighting the user doing so.
 
 ### Sourcing "Now Playing" Movies
 Movies from the collection would be selected at random, and I will manually review that the movie looks professionally advertised. If it's paywalled or DRM-encumbered I will send an automated eMail offering to advertise for them if they provide me a DRM-free copy of the movie and trailer. If they refuse I will repeat this process, as that would be more affordable and/or my political preference. 
 
 Additionally I'll allow artists to pay me to promote their work, using a footer link. 
+
+## Branding
+
+The clearest piece of branding I'd want to provide is to give the site a black background to represent a dark movie theatre or living room. At the same time I'd want to choose a colour to use for emphasis in my design. At first thought I'd choose red as that colour is strongly associated with movies thanks to YouTube, Netflix, and others. On second thought a red highlight colour brings my design too close to Netflix, so I might shift the colour to orange. 
+
+I have yet to choose a name. 
