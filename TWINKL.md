@@ -126,12 +126,6 @@ Iter<String> joinAsc(Cursor[] cursors, terminal = 'v', target/start = undefined,
   repeat from start
 ```
 
-To simplify this algorithm some more, we need to seperate out the different concerns:
-
-* The concern of when to stop traversing down the index can be addressed with a decorator that truncates the tree. 
-* The same can be done for start and end ranges. 
-* That leaves the algorithm above to only deal with joins. 
-
 ### Layer 3 - Graph patterns
 
 Chain the join() iterators together using:
@@ -252,8 +246,6 @@ Iter<Object> unionSlow(Iter<Object> a, Iter<Object> b):
   yield from as
   yield from item for item in b if item not in a
 ```
-
-#### 
 
 ### Level 5 - Variable Order Optimization
 
