@@ -1,3 +1,5 @@
+See also: https://www.eternum.io/ipfs/QmUSBeKFmoj1jZVMTqMxp2GyKGJPwSyZvXDwc8c5KCQKFd/
+
 # Project-Scavange
 The goal: Encourage the success of search engines targetted to specific domains, over *the one searchbox to rule them all* (as in **Google**, Bing, DuckDuckGo, Yacy, etc). 
 
